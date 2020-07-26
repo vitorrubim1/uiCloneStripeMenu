@@ -1,8 +1,8 @@
 import * as React from "react";
 
-const Context = React.createContext();
+export const Context = React.createContext();
 
-export function Provider({ children }) {
+export function DropDownProvider({ children }) {
   const [options, setOptions] = React.useState([]); //arr, q conterá as options
   const [targetId, setTargetId] = React.useState(null); //qual é o alvo do container q estou usando
   const [cacheId, setCacheId] = React.useState(null); //memória, representa a ultima opção q passou o mouse
@@ -61,8 +61,25 @@ export function Provider({ children }) {
   );
 
   React.useEffect(() => {
-    if(targetId !== null) setCacheId(targetId);
+    if (targetId !== null) setCacheId(targetId);
   }, [targetId]);
 
-  return <Context.Provider value={{}}>{childre}</Context.Provider>;
+  return (
+    <Context.Provider
+      value={{
+        //informações que o provider passará aos filhos
+        registerOption,
+        updateOptionProps,
+        getOptionById,
+        deleteOptionById,
+        options,
+        targetId,
+        setTargetId,
+        cacheId,
+        setCacheId,
+      }}
+    >
+      {children}
+    </Context.Provider>
+  );
 }
